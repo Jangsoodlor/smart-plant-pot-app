@@ -10,10 +10,6 @@ For code that's used to collect data, please refer to [knilios/SmartPlantPot](ht
 ## Installation
 Requirements: You must have python 3 installed on your machine.
 1. Clone the repo.
-1. Install dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
 1. Go to `api` directory and copy `config.py.example` to `config.py`
 1. Edit `config.py` and fill in your credentials.
 1. Go to `api/openapi/moisture.yaml`.
@@ -21,20 +17,26 @@ Requirements: You must have python 3 installed on your machine.
 1. Click Generate Server -> Python Flask
 1. Download and extracts it to `/api/`
 1. Rename the newly-extracted folder to whatever you put as `OPENAPI_STUB_DIR` (the default is "stub") in the `config.py` file.
+1. Install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 At the end of the installation, your project structure should look something like this:
 
 ```
 .
 ├── api/
+│   ├── openapi/
+│   │   └── moisture.yaml
 │   ├── stub/
 │   │   ├── swagger_server/
 │   │   └── ...
 │   ├── config.py
-│   └── app.py
-├── main.py
-├── LICENSE.md
-├── README.md
+│   ├── app.py
+│   └── ...
+├── Main.py
+├── requirements.txt
 └── ...
 ```
 
@@ -48,4 +50,6 @@ At the end of the installation, your project structure should look something lik
 2. Go to `localhost:8080/moisture/v1/ui`
 
 ### Visualisation
-TBA.
+```bash
+streamlit run Main.py
+```

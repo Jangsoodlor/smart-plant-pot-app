@@ -6,24 +6,47 @@ info:
 servers:
 - url: /moisture/v1
 paths:
-  /moisture:
+  /sensor/latest:
     get:
-      summary: returns the latest moisture level of a plant.
-      operationId: controller.get_current_moisture
+      summary: Returns the latest sensor readings (light, temperature, soil moisture).
+      operationId: controller.get_latest_sensor_data
       responses:
         200:
           description: success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RealTimeMoisture'
+                $ref: '#/components/schemas/SensorData'
+  /sensor/aggregateHour/{hrs}:
+    parameters:
+      - name: hrs
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Returns a list of average sensor readings every n hours where n is specified by the user.
+      operationId: controller.get_aggregate_data
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SensorData'
 
 components:
   schemas:
-    RealTimeMoisture:
+    SensorData:
       type: object
       properties:
         readTime:
           type: string
-        level:
+        light:
+          type: number
+        temperature:
+          type: number
+        soilMoisture:
           type: integer
