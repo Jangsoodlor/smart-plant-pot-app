@@ -1,0 +1,6 @@
+-r api/stub/requirements.txt
+connexion >= 2.6.0, <3.0.0
+DBUtils
+PyMySQL
+streamlit
+cryptography

@@ -1,0 +1,29 @@
+openapi: 3.0.0
+info:
+  title: Real-Time soil moisture level.
+  description: TBA
+  version: 0.0.1
+servers:
+- url: /moisture/v1
+paths:
+  /moisture:
+    get:
+      summary: returns the latest moisture level of a plant.
+      operationId: controller.get_current_moisture
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RealTimeMoisture'
+
+components:
+  schemas:
+    RealTimeMoisture:
+      type: object
+      properties:
+        readTime:
+          type: string
+        level:
+          type: integer

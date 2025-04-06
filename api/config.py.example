@@ -1,0 +1,5 @@
+OPENAPI_STUB_DIR = "stub"
+DB_HOST = "www.google.com"
+DB_USER = "Joseph Joestar"
+DB_PASSWD = "1234"
+DB_NAME = "DROP DATABASE *"
