@@ -10,10 +10,19 @@ def get_dataframe():
     f = requests.get(url)
     return pd.read_json(f.text)
 
-st.write("# Average Moisture every 3 hours")
 
 df = get_dataframe()
 # st.line_chart(x='readTime', y='soilMoisture', data=df)
-fig = px.line(x=df['readTime'], y=df['soilMoisture'])
-st.plotly_chart(fig)
 
+st.sidebar.header("Select Attribute")
+with st.sidebar:
+    radio_btn = st.radio(
+        options=[col for col in df.columns if col != "readTime"],
+        label="Select Attirbute",
+        label_visibility="collapsed",
+    )
+
+
+st.write(f"# Average {radio_btn} every 3 hours")
+fig = px.line(x=df["readTime"], y=df[radio_btn])
+st.plotly_chart(fig)
