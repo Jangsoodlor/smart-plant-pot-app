@@ -16,7 +16,6 @@ class APIFetcher:
     ) -> pd.DataFrame:
         url = f"{cls.URL}/{source}/aggregate?days={data_range}&hours={frequency}"
         response = requests.get(url)
-        print(response.text)
         return pd.read_json(StringIO(response.text))
 
     @classmethod
@@ -24,3 +23,7 @@ class APIFetcher:
         url = f"{cls.URL}/{source}/latest"
         response = requests.get(url)
         return json.loads(response.text)
+
+    @classmethod
+    def get_attributes(cls, source: str) -> list[str]:
+        return [key for key in cls.get_latest_data(source).keys()]

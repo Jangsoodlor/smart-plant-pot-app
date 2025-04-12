@@ -1,5 +1,5 @@
 import streamlit as st
-from APIFetcher import APIFetcher
+from components import APIFetcher
 
 if __name__ == "__main__":
     st.write("# Current sensor readings")
