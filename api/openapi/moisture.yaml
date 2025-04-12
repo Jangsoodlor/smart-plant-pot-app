@@ -17,16 +17,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SensorData'
-  /sensor/aggregateHour/{hrs}:
+  
+  /sensor/aggregate:
     parameters:
-      - name: hrs
-        in: path
-        required: true
+      - in: query
+        name: days
         schema:
           type: integer
+      - in: query
+        name: hours
+        schema:
+          type: integer
+
     get:
-      summary: Returns a list of average sensor readings every n hours where n is specified by the user.
-      operationId: controller.get_aggregate_data
+      summary: Returns a list of average sensor readings of every user-specified interval for the last user-specified days.
+      operationId: controller.aggregate_sensor_data
       responses:
         200:
           description: success
@@ -36,6 +41,40 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SensorData'
+  /weather/latest:
+    get:
+      summary: Returns the latest weather data from open-meteo
+      operationId: controller.get_latest_weather_data
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherData'
+  
+  /weather/aggregate:
+    parameters:
+      - in: query
+        name: days
+        schema:
+          type: integer
+      - in: query
+        name: hours
+        schema:
+          type: integer
+    get:
+      summary: Returns a list of average sensor readings of every user-specified interval for the last user-specified days.
+      operationId: controller.aggregate_weather_data
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WeatherData'
 
 components:
   schemas:
@@ -49,4 +88,17 @@ components:
         temperature:
           type: number
         soilMoisture:
-          type: integer
+          type: number
+    WeatherData:
+      type: object
+      properties:
+        readTime:
+          type: string
+        humidity:
+          type: number
+        precipitation:
+          type: number
+        temperature:
+          type: number
+        cloudCover:
+          type: number
