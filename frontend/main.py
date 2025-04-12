@@ -1,12 +1,20 @@
+from datetime import datetime
+
 import streamlit as st
-from utils import APIFetcher, camel_to_title
+from utils import APIFetcher, Units, camel_to_title
+
+
+def parse_time(iso: str):
+    dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
+    return dt.strftime("%d/%m/%Y %H:%M")
+
 
 def write_dashboard(data: dict):
-    st.write(f"Last Updated: {data["readTime"]}")
+    st.write(f"Last Updated: {parse_time(data['readTime'])}")
     for key, value in data.items():
         if key == "readTime":
             continue
-        st.write(f"{camel_to_title(key)}: {value}")
+        st.write(f"{camel_to_title(key)}: {Units.append_unit(key, value)}")
 
 
 if __name__ == "__main__":
