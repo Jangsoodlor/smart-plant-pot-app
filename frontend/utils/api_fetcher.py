@@ -16,12 +16,16 @@ class APIFetcher:
     ) -> pd.DataFrame:
         url = f"{cls.URL}/{source}/aggregate?days={data_range}&hours={frequency}"
         response = requests.get(url)
+        if response.status_code != 200:
+            raise ValueError("Invalid Request.")
         return pd.read_json(StringIO(response.text))
 
     @classmethod
     def get_latest_data(cls, source: str) -> dict:
         url = f"{cls.URL}/{source}/latest"
         response = requests.get(url)
+        if response.status_code != 200:
+            raise ValueError("Invalid Request.")
         return json.loads(response.text)
 
     @classmethod

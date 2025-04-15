@@ -1,12 +1,5 @@
-from datetime import datetime
-
 import streamlit as st
-from utils import APIFetcher, Units, camel_to_title
-
-
-def parse_time(iso: str):
-    dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
-    return dt.strftime("%d/%m/%Y %H:%M")
+from utils import APIFetcher, Units, camel_to_title, parse_time
 
 
 def write_dashboard(data: dict):
