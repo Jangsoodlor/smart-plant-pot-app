@@ -30,13 +30,17 @@ At the end of the installation, your project structure should look something lik
 │   ├── openapi/
 │   │   └── moisture.yaml
 │   ├── stub/
-│   │   ├── swagger_server/
-│   │   └── ...
+│   │   └── swagger_server/
 │   ├── config.py
 │   ├── app.py
 │   └── ...
-├── Main.py
+├── frontend/
+│   ├── main.py
+│   └── ...
+├── test/
+│   └── ...
 ├── requirements.txt
+├── README.md
 └── ...
 ```
 
@@ -51,5 +55,5 @@ At the end of the installation, your project structure should look something lik
 
 ### Visualisation
 ```bash
-streamlit run Main.py
+streamlit run frontend/main.py
 ```
