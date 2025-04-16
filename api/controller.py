@@ -38,7 +38,8 @@ def get_aggregate_data(hrs):
             DATE_ADD(DATE(`ts`), INTERVAL FLOOR(HOUR(`ts`)/{hrs}) * {hrs} HOUR) AS ts,
             AVG(light),
             AVG(temperature),
-            AVG(soil_moisture)
+            AVG(soil_moisture),
+            AVG(humidity)
             FROM plant_sensor
             GROUP BY DATE_ADD(DATE(`ts`), INTERVAL FLOOR(HOUR(`ts`)/{hrs}) * {hrs} HOUR);     
         """)

@@ -4,5 +4,5 @@ DBUtils
 plotly
 plotly[express]
 PyMySQL
-streamlit
+# streamlit
 cryptography

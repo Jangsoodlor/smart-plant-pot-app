@@ -50,3 +50,6 @@ components:
           type: number
         soilMoisture:
           type: integer
+        humidity:
+          type: number
+          
