@@ -98,7 +98,7 @@ components:
           type: number
         precipitation:
           type: number
-        apiTemperature:
+        temperature:
           type: number
         cloudCover:
           type: number

@@ -1,6 +1,5 @@
-import re
-from enum import Enum
 import datetime
+import re
 
 
 def camel_to_title(x: str) -> str:
@@ -32,19 +31,3 @@ def camel_to_uppercase(x: str) -> str:
 def parse_time(iso: str):
     dt = datetime.datetime.fromisoformat(iso.replace("Z", "+00:00"))
     return dt.strftime("%d/%m/%Y %H:%M")
-
-
-class Units(Enum):
-    LIGHT = "Lux"
-    TEMPERATURE = "ºC"
-    API_TEMPERATURE = "ºC"
-    HUMIDITY = "%"
-    PRECIPITATION = "mm"
-    CLOUD_COVER = "%"
-
-    @classmethod
-    def append_unit(cls, key: str, val: float | int) -> str:
-        try:
-            return f"{val:.2f} {cls[camel_to_uppercase(key)].value}"
-        except KeyError:
-            return f"{val:.2f}"

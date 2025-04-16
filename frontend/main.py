@@ -7,7 +7,7 @@ def write_dashboard(data: dict):
     for key, value in data.items():
         if key == "readTime":
             continue
-        st.write(f"{camel_to_title(key)}: {Units.append_unit(key, value)}")
+        st.write(f"{camel_to_title(key)}: {value:.2f} {Units.get_unit(key)}")
 
 
 if __name__ == "__main__":

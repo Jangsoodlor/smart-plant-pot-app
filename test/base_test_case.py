@@ -19,7 +19,7 @@ class BaseTestCase(unittest.TestCase):
 
     def assert_correct_weather_schema(self, data: dict):
         self.assertIn("readTime", data)
-        self.assertIn("apiTemperature", data)
+        self.assertIn("temperature", data)
         self.assertIn("humidity", data)
         self.assertIn("cloudCover", data)
         self.assertIn("precipitation", data)
