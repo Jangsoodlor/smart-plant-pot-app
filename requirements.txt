@@ -6,3 +6,6 @@ plotly[express]
 PyMySQL
 streamlit
 cryptography
+# These two might need to be installed separately
+selenium
+webdriver-manager
