@@ -1,7 +1,7 @@
 import unittest
 from selenium.webdriver.common.by import By
 import time
-from test.frontend_test.selenium_manager import Browser
+from selenium_manager import Browser
 
 def print_things(text):
     try: print(text.text)
