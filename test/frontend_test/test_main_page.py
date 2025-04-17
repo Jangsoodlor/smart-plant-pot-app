@@ -1,11 +1,7 @@
 import unittest
-from selenium import webdriver
-from selenium.webdriver.edge.service import Service as EdgeService
-from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from selenium.webdriver.common.by import By
 import time
-from random import randint
-from selenium_singleton import Browser
+from test.frontend_test.selenium_manager import Browser
 
 def print_things(text):
     try: print(text.text)
@@ -47,6 +43,6 @@ class MainPageTest(unittest.TestCase):
         self.assertIn("Last Updated", heading[index+1].text)
         
     def tearDown(self):
-        self.driver.quit()
+        self.driver.close()
 if __name__ == '__main__':
     unittest.main()
