@@ -30,8 +30,6 @@ class GraphPageTest(unittest.TestCase):
         self.driver.implicitly_wait(10)
         button_names = self.driver.find_elements(by=By.XPATH, value="//div[@data-testid='stRadio']")[0].text.split("\n")
         labels = self.driver.find_elements(by=By.XPATH, value="//label[@data-baseweb='radio']")
-        print(button_names)
-        print(labels)
         wait = WebDriverWait(self.driver, 10)
         for name_index in range(len(button_names)):
             button = wait.until(EC.element_to_be_clickable(labels[name_index]))
