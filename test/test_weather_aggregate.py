@@ -14,23 +14,25 @@ class TestAggregateWeather(BaseTestCase):
         self.assert_frequency_diff(data, 3)
         self.assert_range_diff(data, 3)
 
-    def test_aggregate_with_hours_param(self):
-        response = requests.get(self._url + "weather/aggregate?hours=2")
-        self.assertEqual(response.status_code, 200)
-        data = json.loads(response.text)
-        self.assertIsInstance(data, list)
-        self.assert_correct_weather_schema(data[-1])
-        self.assert_frequency_diff(data, 2)
-        self.assert_range_diff(data, 3)
+    def test_aggregate_with_valid_hours_param(self):
+        for i in (1, 2):
+            response = requests.get(self._url + f"weather/aggregate?hours={i}")
+            self.assertEqual(response.status_code, 200)
+            data = json.loads(response.text)
+            self.assertIsInstance(data, list)
+            self.assert_correct_weather_schema(data[-1])
+            self.assert_frequency_diff(data, i)
+            self.assert_range_diff(data, 3)
 
-    def test_aggregate_with_days_param(self):
-        response = requests.get(self._url + "weather/aggregate?days=2")
-        self.assertEqual(response.status_code, 200)
-        data = json.loads(response.text)
-        self.assertIsInstance(data, list)
-        self.assert_correct_weather_schema(data[-1])
-        self.assert_frequency_diff(data, 3)
-        self.assert_range_diff(data, 2)
+    def test_aggregate_with_valid_days_param(self):
+        for i in (1, 2):
+            response = requests.get(self._url + f"weather/aggregate?days={i}")
+            self.assertEqual(response.status_code, 200)
+            data = json.loads(response.text)
+            self.assertIsInstance(data, list)
+            self.assert_correct_weather_schema(data[-1])
+            self.assert_frequency_diff(data, 3)
+            self.assert_range_diff(data, i)
 
     def test_aggregate_with_hours_and_days_param(self):
         response = requests.get(self._url + "weather/aggregate?days=2&hours=2")
@@ -49,22 +51,16 @@ class TestAggregateWeather(BaseTestCase):
         response = requests.get(self._url + "weather/aggregate?hours=5")
         self.assertEqual(response.status_code, 400)
 
-    def test_aggregate_with_invalid_days_hours_param(self):
+    def test_aggregate_with_non_positive_hours_param(self):
+        for i in (-1, 0):
+            response = requests.get(self._url + f"weather/aggregate?hours={i}")
+            self.assertEqual(response.status_code, 400)
+
+    def test_aggregate_with_non_int_days_hours_param(self):
         response = requests.get(self._url + "weather/aggregate?days=0.5")
         self.assertEqual(response.status_code, 400)
-        
-    def test_aggregate_with_invalid_out_of_range_days_hours_param(self):
-        response = requests.get(self._url + "weather/aggregate?days=0")
-        self.assertEqual(response.status_code, 400)
-        
-    def test_aggregate_with_invalid_out_of_range_negatives_days_hours_param(self):
-        response = requests.get(self._url + "weather/aggregate?days=-1")
-        self.assertEqual(response.status_code, 400)
-        
-    def test_aggregate_with_invalid_zero_hours_param(self):
-        response = requests.get(self._url + "weather/aggregate?hours=0")
-        self.assertEqual(response.status_code, 400)
 
-    def test_aggregate_with_invalid_negative_int_hours_param(self):
-        response = requests.get(self._url + "weather/aggregate?hours=-1")
-        self.assertEqual(response.status_code, 400)
+    def test_aggregate_with_non_positive_days_param(self):
+        for i in (-1, 0):
+            response = requests.get(self._url + f"weather/aggregate?days={i}")
+            self.assertEqual(response.status_code, 400)
