@@ -52,3 +52,19 @@ class TestAggregateWeather(BaseTestCase):
     def test_aggregate_with_invalid_days_hours_param(self):
         response = requests.get(self._url + "weather/aggregate?days=0.5")
         self.assertEqual(response.status_code, 400)
+        
+    def test_aggregate_with_invalid_out_of_range_days_hours_param(self):
+        response = requests.get(self._url + "weather/aggregate?days=0")
+        self.assertEqual(response.status_code, 400)
+        
+    def test_aggregate_with_invalid_out_of_range_negatives_days_hours_param(self):
+        response = requests.get(self._url + "weather/aggregate?days=-1")
+        self.assertEqual(response.status_code, 400)
+        
+    def test_aggregate_with_invalid_zero_hours_param(self):
+        response = requests.get(self._url + "weather/aggregate?hours=0")
+        self.assertEqual(response.status_code, 400)
+
+    def test_aggregate_with_invalid_negative_int_hours_param(self):
+        response = requests.get(self._url + "weather/aggregate?hours=-1")
+        self.assertEqual(response.status_code, 400)
