@@ -1,0 +1,132 @@
+openapi: 3.0.0
+info:
+  title: Real-Time soil moisture level.
+  description: TBA
+  version: 0.0.1
+servers:
+- url: /moisture/v1
+paths:
+  /sensor/latest:
+    get:
+      summary: "Returns the latest sensor readings (light, temperature, soil moisture)."
+      operationId: controller_get_latest_sensor_data
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SensorData"
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /sensor/aggregate:
+    get:
+      summary: Returns a list of average sensor readings of every user-specified interval
+        for the last user-specified days.
+      operationId: controller_aggregate_sensor_data
+      parameters:
+      - name: days
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: hours
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SensorData"
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /weather/latest:
+    get:
+      summary: Returns the latest weather data from open-meteo
+      operationId: controller_get_latest_weather_data
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WeatherData"
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /weather/aggregate:
+    get:
+      summary: Returns a list of average sensor readings of every user-specified interval
+        for the last user-specified days.
+      operationId: controller_aggregate_weather_data
+      parameters:
+      - name: days
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: hours
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WeatherData"
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+components:
+  schemas:
+    SensorData:
+      type: object
+      properties:
+        readTime:
+          type: string
+        light:
+          type: number
+        temperature:
+          type: number
+        soilMoisture:
+          type: number
+      example:
+        soilMoisture: 1.4658129805029452
+        light: 0.8008281904610115
+        temperature: 6.027456183070403
+        readTime: readTime
+    WeatherData:
+      type: object
+      properties:
+        readTime:
+          type: string
+        humidity:
+          type: number
+        precipitation:
+          type: number
+        temperature:
+          type: number
+        cloudCover:
+          type: number
+      example:
+        precipitation: 6.027456183070403
+        temperature: 1.4658129805029452
+        cloudCover: 5.962133916683182
+        readTime: readTime
+        humidity: 0.8008281904610115
+

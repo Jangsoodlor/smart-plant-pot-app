@@ -175,4 +175,4 @@ cython_debug/
 
 # config file
 config.py
-*stub*
+stub.zip
