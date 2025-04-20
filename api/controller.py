@@ -1,8 +1,17 @@
 import sys
-from flask import abort, request
+
 import pymysql
+from config import (
+    DB_HOST,
+    DB_NAME,
+    DB_PASSWD,
+    DB_USER,
+    OPENAPI_STUB_DIR,
+    PLANT_SENSOR_TABLE,
+    WEATHER_TABLE,
+)
 from dbutils.pooled_db import PooledDB
-from config import OPENAPI_STUB_DIR, DB_HOST, DB_USER, DB_PASSWD, DB_NAME
+from flask import abort, request
 
 sys.path.append(OPENAPI_STUB_DIR)
 from swagger_server import models
@@ -16,9 +25,6 @@ pool = PooledDB(
     maxconnections=1,
     blocking=True,
 )
-
-PLANT_SENSOR_TABLE = "plant_sensor"
-WEATHER_TABLE = "open-meteo"
 
 
 def get_latest_sensor_data():
@@ -49,9 +55,9 @@ def aggregate_sensor_data():
             AVG(light),
             AVG(temperature),
             AVG(soil_moisture)
-            FROM {PLANT_SENSOR_TABLE}
+            FROM `{PLANT_SENSOR_TABLE}`
             WHERE `ts` > (
-                SELECT MAX(`ts`) - INTERVAL {days} DAY FROM {PLANT_SENSOR_TABLE}
+                SELECT MAX(`ts`) - INTERVAL {days} DAY FROM `{PLANT_SENSOR_TABLE}`
             )
             GROUP BY DATE_ADD(DATE(`ts`), INTERVAL FLOOR(HOUR(`ts`)/{hours}) * {hours} HOUR);     
         """)
