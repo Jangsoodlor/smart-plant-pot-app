@@ -75,6 +75,23 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/WeatherData'
+  /predictmoisture/{moisture}:
+    parameters:
+    - name: moisture
+      in: path
+      required: true
+      schema:
+        type: number
+    get:
+      summary: Get the prediction of soil moisture.
+      operationId: controller.moisture_prediction
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictMoisture'
 
 components:
   schemas:
@@ -102,3 +119,19 @@ components:
           type: number
         cloud_cover:
           type: number
+    SoilMoisture:
+      type: object
+      properties:
+        read_time:
+          type: string
+        soil_moisture:
+          type: number
+    PredictMoisture:
+      type: object
+      properties:
+        duration:
+          type: string
+        predictions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SoilMoisture'

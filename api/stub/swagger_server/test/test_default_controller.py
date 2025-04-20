@@ -5,6 +5,7 @@ from __future__ import absolute_import
 from flask import json
 from six import BytesIO
 
+from swagger_server.models.predict_moisture import PredictMoisture  # noqa: E501
 from swagger_server.models.sensor_data import SensorData  # noqa: E501
 from swagger_server.models.weather_data import WeatherData  # noqa: E501
 from swagger_server.test import BaseTestCase
@@ -59,6 +60,17 @@ class TestDefaultController(BaseTestCase):
         """
         response = self.client.open(
             '/weather/latest',
+            method='GET')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_controller_moisture_prediction(self):
+        """Test case for controller_moisture_prediction
+
+        Get the prediction of soil moisture.
+        """
+        response = self.client.open(
+            '/predictmoisture/{moisture}'.format(moisture=1.2),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))

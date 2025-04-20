@@ -92,6 +92,26 @@ paths:
                   $ref: "#/components/schemas/WeatherData"
                 x-content-type: application/json
       x-openapi-router-controller: swagger_server.controllers.default_controller
+  /predictmoisture/{moisture}:
+    get:
+      summary: Get the prediction of soil moisture.
+      operationId: controller_moisture_prediction
+      parameters:
+      - name: moisture
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PredictMoisture"
+      x-openapi-router-controller: swagger_server.controllers.default_controller
 components:
   schemas:
     SensorData:
@@ -129,4 +149,30 @@ components:
         temperature: 1.4658129805029452
         cloud_cover: 5.962133916683182
         humidity: 0.8008281904610115
+    SoilMoisture:
+      type: object
+      properties:
+        read_time:
+          type: string
+        soil_moisture:
+          type: number
+      example:
+        read_time: read_time
+        soil_moisture: 0.8008281904610115
+    PredictMoisture:
+      type: object
+      properties:
+        duration:
+          type: string
+        predictions:
+          type: array
+          items:
+            $ref: "#/components/schemas/SoilMoisture"
+      example:
+        duration: duration
+        predictions:
+        - read_time: read_time
+          soil_moisture: 0.8008281904610115
+        - read_time: read_time
+          soil_moisture: 0.8008281904610115
 

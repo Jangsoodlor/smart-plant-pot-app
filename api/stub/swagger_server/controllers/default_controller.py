@@ -1,6 +1,7 @@
 import connexion
 import six
 
+from swagger_server.models.predict_moisture import PredictMoisture  # noqa: E501
 from swagger_server.models.sensor_data import SensorData  # noqa: E501
 from swagger_server.models.weather_data import WeatherData  # noqa: E501
 from swagger_server import util
@@ -54,5 +55,18 @@ def controller_get_latest_weather_data():  # noqa: E501
 
 
     :rtype: WeatherData
+    """
+    return 'do some magic!'
+
+
+def controller_moisture_prediction(moisture):  # noqa: E501
+    """Get the prediction of soil moisture.
+
+     # noqa: E501
+
+    :param moisture: 
+    :type moisture: float
+
+    :rtype: PredictMoisture
     """
     return 'do some magic!'

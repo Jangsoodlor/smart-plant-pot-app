@@ -12,6 +12,7 @@ from config import (
 )
 from dbutils.pooled_db import PooledDB
 from flask import abort, request
+from prediction import PredictMoisture
 
 sys.path.append(OPENAPI_STUB_DIR)
 from swagger_server import models
@@ -105,3 +106,12 @@ def aggregate_weather_data():
         """)
         result = [models.WeatherData(*data) for data in cs.fetchall()]
     return result
+
+
+def moisture_prediction(moisture):
+    predictions = [
+        models.SoilMoisture(row["ts"], row["soil_moisture"])
+        for _, row in PredictMoisture().update_df(None).get_predictions().iterrows()
+    ]
+    duration = PredictMoisture().predict_duration(moisture)
+    return models.PredictMoisture(duration, predictions)
