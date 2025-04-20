@@ -81,18 +81,18 @@ components:
     SensorData:
       type: object
       properties:
-        readTime:
+        read_time:
           type: string
         light:
           type: number
         temperature:
           type: number
-        soilMoisture:
+        soil_moisture:
           type: number
     WeatherData:
       type: object
       properties:
-        readTime:
+        read_time:
           type: string
         humidity:
           type: number
@@ -100,5 +100,5 @@ components:
           type: number
         temperature:
           type: number
-        cloudCover:
+        cloud_cover:
           type: number

@@ -1,6 +1,6 @@
 import plotly.express as px
 import plotly.graph_objects as go
-from utils import APIFetcher, camel_to_title, DBAttributes, Units
+from utils import APIFetcher, snake_to_title, DBAttributes, Units
 import pandas as pd
 import streamlit as st
 
@@ -10,9 +10,9 @@ class TimeSeriesChart:
     def append_unit(cls, attribute: str):
         unit = Units.get_unit(attribute)
         return (
-            f"{camel_to_title(attribute)} ({unit})"
+            f"{snake_to_title(attribute)} ({unit})"
             if unit != ""
-            else camel_to_title(attribute)
+            else snake_to_title(attribute)
         )
 
     @classmethod
@@ -25,7 +25,7 @@ class TimeSeriesChart:
         else:
             fig = cls.__get_single_line_chart(x, y, frequency, data_range)
         fig.update_layout(
-            xaxis_title=camel_to_title(x),
+            xaxis_title=snake_to_title(x),
             yaxis_title=f"{cls.append_unit(y)}",
         )
         return fig

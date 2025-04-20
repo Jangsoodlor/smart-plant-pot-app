@@ -10,7 +10,6 @@ class APIFetcher:
     URL = "http://localhost:8080/moisture/v1"
 
     @classmethod
-    @st.cache_data
     def aggregate_data(
         cls, source: str, frequency: int = 3, data_range: int = 3
     ) -> pd.DataFrame:

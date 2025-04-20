@@ -1,5 +1,5 @@
 from enum import Enum
-from .misc import camel_to_uppercase
+from .misc import snake_to_uppercase
 
 
 class Units(Enum):
@@ -13,6 +13,6 @@ class Units(Enum):
     @classmethod
     def get_unit(cls, key: str) -> str:
         try:
-            return f"{cls[camel_to_uppercase(key)].value}"
+            return f"{cls[snake_to_uppercase(key)].value}"
         except KeyError:
             return ""

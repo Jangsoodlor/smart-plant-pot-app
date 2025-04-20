@@ -1,13 +1,13 @@
 import streamlit as st
-from utils import APIFetcher, Units, camel_to_title, parse_time
+from utils import APIFetcher, Units, snake_to_title, parse_time
 
 
 def write_dashboard(data: dict):
-    st.write(f"Last Updated: {parse_time(data['readTime'])}")
+    st.write(f"Last Updated: {parse_time(data['read_time'])}")
     for key, value in data.items():
-        if key == "readTime":
+        if key == "read_time":
             continue
-        st.write(f"{camel_to_title(key)}: {value:.2f} {Units.get_unit(key)}")
+        st.write(f"{snake_to_title(key)}: {value:.2f} {Units.get_unit(key)}")
 
 
 if __name__ == "__main__":

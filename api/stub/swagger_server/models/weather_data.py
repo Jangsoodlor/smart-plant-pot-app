@@ -37,11 +37,11 @@ class WeatherData(Model):
         }
 
         self.attribute_map = {
-            'read_time': 'readTime',
+            'read_time': 'read_time',
             'humidity': 'humidity',
             'precipitation': 'precipitation',
             'temperature': 'temperature',
-            'cloud_cover': 'cloudCover'
+            'cloud_cover': 'cloud_cover'
         }
         self._read_time = read_time
         self._humidity = humidity

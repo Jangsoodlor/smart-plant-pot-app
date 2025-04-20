@@ -2,7 +2,7 @@ from collections.abc import Callable
 
 import streamlit as st
 from components import RadioButtons, TimeSeriesChart
-from utils import camel_to_title
+from utils import snake_to_title
 
 
 def format_sliders(unit: str) -> Callable:
@@ -23,7 +23,7 @@ if __name__ == "__main__":
     st.sidebar.header("Select Attribute")
     with st.sidebar:
         selected_button = RadioButtons.render()
-    st.write(f"# History of {camel_to_title(selected_button)}")
+    st.write(f"# History of {snake_to_title(selected_button)}")
 
     col1, col2 = st.columns(2, gap="medium")
     with col1:
@@ -44,7 +44,7 @@ if __name__ == "__main__":
 
     st.plotly_chart(
         TimeSeriesChart.get_fig(
-            x="readTime",
+            x="read_time",
             y=selected_button,
             frequency=st.session_state.frequency,
             data_range=st.session_state.data_range,

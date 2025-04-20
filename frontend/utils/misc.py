@@ -1,31 +1,12 @@
 import datetime
-import re
 
 
-def camel_to_title(x: str) -> str:
-    def add_spacing(w: str) -> str:
-        if len(w) == 0:
-            return w
-        if w[-1] == " ":
-            return w
-        return w + " "
-
-    return "".join(
-        [add_spacing(a.title()) for a in (re.split(r"(?=[A-Z][^A-Z])", x))]
-    ).strip()
+def snake_to_title(x: str) -> str:
+    return x.replace("_", " ").title()
 
 
-def camel_to_uppercase(x: str) -> str:
-    def add_underscore(w: str) -> str:
-        if len(w) == 0:
-            return w
-        if w[-1] == "_" or w[-1] == " ":
-            return w
-        return w + "_"
-
-    return "".join(
-        [add_underscore(a.upper().strip()) for a in (re.split(r"(?=[A-Z][^A-Z])", x))]
-    ).strip("_")
+def snake_to_uppercase(x: str) -> str:
+    return x.upper()
 
 
 def parse_time(iso: str):

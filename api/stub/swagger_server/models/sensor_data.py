@@ -34,10 +34,10 @@ class SensorData(Model):
         }
 
         self.attribute_map = {
-            'read_time': 'readTime',
+            'read_time': 'read_time',
             'light': 'light',
             'temperature': 'temperature',
-            'soil_moisture': 'soilMoisture'
+            'soil_moisture': 'soil_moisture'
         }
         self._read_time = read_time
         self._light = light

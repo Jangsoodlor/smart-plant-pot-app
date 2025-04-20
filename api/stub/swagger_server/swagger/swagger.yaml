@@ -97,23 +97,23 @@ components:
     SensorData:
       type: object
       properties:
-        readTime:
+        read_time:
           type: string
         light:
           type: number
         temperature:
           type: number
-        soilMoisture:
+        soil_moisture:
           type: number
       example:
-        soilMoisture: 1.4658129805029452
+        read_time: read_time
         light: 0.8008281904610115
         temperature: 6.027456183070403
-        readTime: readTime
+        soil_moisture: 1.4658129805029452
     WeatherData:
       type: object
       properties:
-        readTime:
+        read_time:
           type: string
         humidity:
           type: number
@@ -121,12 +121,12 @@ components:
           type: number
         temperature:
           type: number
-        cloudCover:
+        cloud_cover:
           type: number
       example:
         precipitation: 6.027456183070403
+        read_time: read_time
         temperature: 1.4658129805029452
-        cloudCover: 5.962133916683182
-        readTime: readTime
+        cloud_cover: 5.962133916683182
         humidity: 0.8008281904610115
 

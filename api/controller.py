@@ -17,12 +17,15 @@ pool = PooledDB(
     blocking=True,
 )
 
+PLANT_SENSOR_TABLE = "plant_sensor"
+WEATHER_TABLE = "open-meteo"
+
 
 def get_latest_sensor_data():
     with pool.connection() as conn, conn.cursor() as cs:
-        cs.execute("""
+        cs.execute(f"""
             SELECT `ts`, `light`, `temperature`, `soil_moisture`
-            FROM `plant_sensor`
+            FROM `{PLANT_SENSOR_TABLE}`
             ORDER BY ts DESC
             LIMIT 1;
         """)
@@ -46,19 +49,25 @@ def aggregate_sensor_data():
             AVG(light),
             AVG(temperature),
             AVG(soil_moisture)
-            FROM plant_sensor
-            WHERE `ts` >= NOW() - INTERVAL {days} DAY
+            FROM {PLANT_SENSOR_TABLE}
+            WHERE `ts` > (
+                SELECT MAX(`ts`) - INTERVAL {days} DAY FROM {PLANT_SENSOR_TABLE}
+            )
             GROUP BY DATE_ADD(DATE(`ts`), INTERVAL FLOOR(HOUR(`ts`)/{hours}) * {hours} HOUR);     
         """)
-        result = [models.SensorData(*data) for data in cs.fetchall()]
+        result = [
+            models.SensorData(read_time, light, temperature, soil_moisture)
+            for read_time, light, temperature, soil_moisture in cs.fetchall()
+        ]
+        print(result)
     return result
 
 
 def get_latest_weather_data():
     with pool.connection() as conn, conn.cursor() as cs:
-        cs.execute("""
+        cs.execute(f"""
             SELECT `ts`, `humidity`,`precipitation`, `temperature`, `cloud_cover`
-            FROM `open-meteo`
+            FROM `{WEATHER_TABLE}`
             ORDER BY `ts` DESC
             LIMIT 1;
         """)
@@ -82,8 +91,10 @@ def aggregate_weather_data():
             AVG(precipitation),
             AVG(temperature),
             AVG(cloud_cover)
-            FROM `open-meteo`
-            WHERE `ts` >= NOW() - INTERVAL {days} DAY
+            FROM `{WEATHER_TABLE}`
+            WHERE `ts` > (
+                SELECT MAX(`ts`) - INTERVAL {days} DAY FROM `{WEATHER_TABLE}`
+            )
             GROUP BY DATE_ADD(DATE(`ts`), INTERVAL FLOOR(HOUR(`ts`)/{hours}) * {hours} HOUR);     
         """)
         result = [models.WeatherData(*data) for data in cs.fetchall()]
