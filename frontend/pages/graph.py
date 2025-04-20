@@ -6,6 +6,12 @@ from utils import snake_to_title
 
 
 def format_sliders(unit: str) -> Callable:
+    """Format function of the slider
+
+    :param unit: unit of the slider.
+    :return: A format function that add unit to the slider's value.
+    """
+
     def format_func(value):
         if value == 1:
             return f"{value} {unit.title()}"
