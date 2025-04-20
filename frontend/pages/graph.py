@@ -43,7 +43,7 @@ if __name__ == "__main__":
         )
 
     st.plotly_chart(
-        TimeSeriesChart.get_fig(
+        TimeSeriesChart.fetch_and_get_fig(
             x="read_time",
             y=selected_button,
             frequency=st.session_state.frequency,
