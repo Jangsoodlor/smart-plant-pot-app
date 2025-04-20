@@ -1,7 +1,7 @@
 from collections.abc import Callable
 
 import streamlit as st
-from components import RadioButtons, TimeSeriesChart
+from components import RadioButtons, TimeSeriesChart, navbar
 from utils import snake_to_title
 
 
@@ -15,6 +15,7 @@ def format_sliders(unit: str) -> Callable:
 
 
 if __name__ == "__main__":
+    navbar()
     if "frequency" not in st.session_state:
         st.session_state.frequency = 3
     if "data_range" not in st.session_state:

@@ -1,16 +1,17 @@
 import pandas as pd
 import streamlit as st
-from components import TimeSeriesChart
+from components import TimeSeriesChart, navbar
 
 
 def init_page():
+    st.set_page_config(
+        layout="wide", page_title="Watering Prediction | Smart Plant Pot 🪴🌊 App"
+    )
+    navbar()
     if "show_chart" not in st.session_state:
         st.session_state.show_chart = False
     if "prediction" not in st.session_state:
         st.session_state.prediction = ""
-    st.set_page_config(
-        layout="wide", page_title="Watering Prediction | Smart Plant Pot 🪴🌊 App"
-    )
 
 
 def predict():
@@ -39,9 +40,9 @@ if __name__ == "__main__":
         soil_moisture = st.text_input(
             label="Please input the desired soil moisture level", key="soil_moisture"
         )
-        st.button("Set to Streamlit", on_click=predict)
+        st.button("Predict", on_click=predict)
     with col2:
         st.write(st.session_state.prediction)
-    st.write("## Fancy Graphs")
+    st.write("## Prediction Graph")
     if st.session_state.show_chart:
         st.plotly_chart(get_prediction_chart(None))

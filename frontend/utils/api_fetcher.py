@@ -21,7 +21,6 @@ class APIFetcher:
         return pd.read_json(StringIO(response.text))
 
     @classmethod
-    @st.cache_data
     def get_latest_data(cls, source: str) -> dict:
         url = f"{cls.URL}/{source}/latest"
         response = requests.get(url)
