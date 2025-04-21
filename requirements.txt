@@ -6,7 +6,5 @@ plotly[express]
 PyMySQL
 streamlit
 cryptography
-# testing libraries
-pytest
-selenium
-webdriver-manager
+matplotlib
+statsmodels

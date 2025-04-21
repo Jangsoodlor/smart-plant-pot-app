@@ -131,7 +131,19 @@ components:
       properties:
         duration:
           type: string
+        old_data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SoilMoisture'
         predictions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SoilMoisture'
+        upper:
+          type: array
+          items:
+            $ref: '#/components/schemas/SoilMoisture'
+        lower:
           type: array
           items:
             $ref: '#/components/schemas/SoilMoisture'

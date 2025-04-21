@@ -1,4 +1,3 @@
-import json
 from datetime import datetime, timedelta
 
 import numpy as np
@@ -11,7 +10,7 @@ class PredictMoisture:
     __instance = None
 
     def __init__(self):
-        self.__model_dataframe: pd.DataFrame | None = None # MAY NOT BE NECESSARY
+        self.__model = None # MAY NOT BE NECESSARY
         self.__prediction_cache: pd.DataFrame | None = None
         # self.__model = load model from .pkl file
 
@@ -21,14 +20,14 @@ class PredictMoisture:
             cls.__instance = super().__new__(cls)
         return cls.__instance
 
-    def update_df(self, data):
+    def set_model(self, model):
         """(MAY NOT BE NECESSARY) Update the data used to predict soil moisture
 
         :param data: Any data (idk what this would look like.
         Basically we use the same query as in creating sarimax table in
         controller.py and throw the result here and make it a dataframe somehow)
         """
-        self.__model_dataframe = data
+        self.__model = model
         return self
 
     def predict_duration(self, moisture_amount: float | int) -> str:

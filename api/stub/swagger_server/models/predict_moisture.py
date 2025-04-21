@@ -15,25 +15,40 @@ class PredictMoisture(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, duration: str=None, predictions: List[SoilMoisture]=None):  # noqa: E501
+    def __init__(self, duration: str=None, old_data: List[SoilMoisture]=None, predictions: List[SoilMoisture]=None, upper: List[SoilMoisture]=None, lower: List[SoilMoisture]=None):  # noqa: E501
         """PredictMoisture - a model defined in Swagger
 
         :param duration: The duration of this PredictMoisture.  # noqa: E501
         :type duration: str
+        :param old_data: The old_data of this PredictMoisture.  # noqa: E501
+        :type old_data: List[SoilMoisture]
         :param predictions: The predictions of this PredictMoisture.  # noqa: E501
         :type predictions: List[SoilMoisture]
+        :param upper: The upper of this PredictMoisture.  # noqa: E501
+        :type upper: List[SoilMoisture]
+        :param lower: The lower of this PredictMoisture.  # noqa: E501
+        :type lower: List[SoilMoisture]
         """
         self.swagger_types = {
             'duration': str,
-            'predictions': List[SoilMoisture]
+            'old_data': List[SoilMoisture],
+            'predictions': List[SoilMoisture],
+            'upper': List[SoilMoisture],
+            'lower': List[SoilMoisture]
         }
 
         self.attribute_map = {
             'duration': 'duration',
-            'predictions': 'predictions'
+            'old_data': 'old_data',
+            'predictions': 'predictions',
+            'upper': 'upper',
+            'lower': 'lower'
         }
         self._duration = duration
+        self._old_data = old_data
         self._predictions = predictions
+        self._upper = upper
+        self._lower = lower
 
     @classmethod
     def from_dict(cls, dikt) -> 'PredictMoisture':
@@ -68,6 +83,27 @@ class PredictMoisture(Model):
         self._duration = duration
 
     @property
+    def old_data(self) -> List[SoilMoisture]:
+        """Gets the old_data of this PredictMoisture.
+
+
+        :return: The old_data of this PredictMoisture.
+        :rtype: List[SoilMoisture]
+        """
+        return self._old_data
+
+    @old_data.setter
+    def old_data(self, old_data: List[SoilMoisture]):
+        """Sets the old_data of this PredictMoisture.
+
+
+        :param old_data: The old_data of this PredictMoisture.
+        :type old_data: List[SoilMoisture]
+        """
+
+        self._old_data = old_data
+
+    @property
     def predictions(self) -> List[SoilMoisture]:
         """Gets the predictions of this PredictMoisture.
 
@@ -87,3 +123,45 @@ class PredictMoisture(Model):
         """
 
         self._predictions = predictions
+
+    @property
+    def upper(self) -> List[SoilMoisture]:
+        """Gets the upper of this PredictMoisture.
+
+
+        :return: The upper of this PredictMoisture.
+        :rtype: List[SoilMoisture]
+        """
+        return self._upper
+
+    @upper.setter
+    def upper(self, upper: List[SoilMoisture]):
+        """Sets the upper of this PredictMoisture.
+
+
+        :param upper: The upper of this PredictMoisture.
+        :type upper: List[SoilMoisture]
+        """
+
+        self._upper = upper
+
+    @property
+    def lower(self) -> List[SoilMoisture]:
+        """Gets the lower of this PredictMoisture.
+
+
+        :return: The lower of this PredictMoisture.
+        :rtype: List[SoilMoisture]
+        """
+        return self._lower
+
+    @lower.setter
+    def lower(self, lower: List[SoilMoisture]):
+        """Sets the lower of this PredictMoisture.
+
+
+        :param lower: The lower of this PredictMoisture.
+        :type lower: List[SoilMoisture]
+        """
+
+        self._lower = lower
