@@ -34,6 +34,7 @@ Please refer to [the installation guide](https://github.com/Jangsoodlor/smart-pl
 
 ### Running tests
 ```bash
+pip install -r test-requirements.txt
 cd test
 pytest
 ```
