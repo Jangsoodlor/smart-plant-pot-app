@@ -1,5 +1,4 @@
 import pandas as pd
-import plotly.graph_objects as go
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 
 
@@ -132,69 +131,33 @@ class Model:
         lower.index = forecast_index
         upper = forecast_ci.iloc[:, 1]
         upper.index = forecast_index
-        print(predicted)
-        print("date range: ", forecast_index)
-
         self.__cached_prediction = [predicted, upper, lower]
 
         return predicted, upper, lower
 
-    def get_duration(self, moisture_level) -> str:
-        """Returns either the duration based on moisture level (or the exact date and time up 2 you)"""
-        # TODO: implement
-        return "3000 days"
-    
+    def get_duration(self, moisture_level: int) -> str:
+        """
+        Returns the duration of days (from the last day in the training data)
+        that the moisture will be at the specified level.
+        The maximum date is 7 days.
+
+        :param moisture_level: The integer of the moisture level you want.
+        :return: The string of the number of days.
+        """
+        MAX_DAY = 7
+        AMOUNT_OF_POINTS_IN_A_DAY = (60 / 15) * 24
+        predicted, upper, lower = self.get_prediction(
+            AMOUNT_OF_POINTS_IN_A_DAY * MAX_DAY
+        )
+        matches = predicted[predicted <= moisture_level]
+        if matches.empty:
+            return f"More than {MAX_DAY} days"
+        index = matches.index[0]
+        number_of_days = (index - self.__main_data.index[-1]).days
+        return f"{number_of_days} " + (
+            "day" if number_of_days == 1 or number_of_days == 0 else "days"
+        )
+
     @property
     def df(self):
         return self.__main_data
-
-
-def plot_prediction_chart(old_data, prediction, upper, lower):
-    fig = go.Figure()
-
-    # Line for actual data
-    fig.add_trace(
-        go.Scatter(x=old_data.index, y=old_data["soil_moisture"], mode="lines", name="data")
-    )
-
-    # Line for predicted data
-    fig.add_trace(
-        go.Scatter(x=prediction.index, y=prediction, mode="lines", name="Predicted")
-    )
-
-    # Fill between lower and upper prediction intervals
-    fig.add_trace(
-        go.Scatter(
-            x=prediction.index.tolist() + prediction.index[::-1].tolist(),
-            y=upper.tolist() + lower[::-1].tolist(),
-            fill="toself",
-            fillcolor="rgba(255, 192, 203, 0.3)",  # pink with alpha 0.3
-            line=dict(color="rgba(255,255,255,0)"),
-            hoverinfo="skip",
-            name="Confidence Interval",
-        )
-    )
-
-    fig.update_layout(
-        title="Soil Moisture: Training, Test and Predictions",
-        xaxis_title="Date",
-        yaxis_title="Soil Moisture",
-        legend=dict(title=None),
-        template="simple_white",
-    )
-
-    fig.show()
-
-if __name__ == "__main__":
-    df = pd.read_csv("dataset.csv", index_col="ts", parse_dates=True)
-    builder = ModelBuilder()
-    builder.add_basic_init(df, "soil_moisture", (2, 0, 1), pd.Timedelta(minutes=15))
-
-    builder.add_exog("temperature", (2, 0, 1), (1, 0, 1, 24)).add_exog(
-        "humidity", (2, 0, 1), (1, 0, 1, 24)
-    ).build()
-    prediction, upper, lower = ModelManager.get_model().fit_model().get_prediction(1240)
-
-    plot_prediction_chart(df, prediction, upper, lower)
-    print(type(prediction))
-    print(type(prediction.index))
