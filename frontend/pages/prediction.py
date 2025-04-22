@@ -48,7 +48,7 @@ if __name__ == "__main__":
     with col2:
         st.write("You should water your plant in:")
         st.write(st.session_state.prediction)
-    st.write("## Prediction Graph")
+    st.write("## Soil Moisture Prediction Graph")
     if st.session_state.show_chart:
         st.plotly_chart(st.session_state.chart)
     st.write(
