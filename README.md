@@ -2,15 +2,20 @@
 This project aims to create a system to notify users when to water their plants.
 
 - For micropython code used for data collection, please refer to [knilios/SmartPlantPot](https://github.com/knilios/SmartPlantPot).
-- For the predicion model, please refer to [Jangsoodlor/smart-plant-pot-model](https://github.com/Jangsoodlor/smart-plant-pot-model).
+- For more information about the predicion model, please refer to [Jangsoodlor/smart-plant-pot-model](https://github.com/Jangsoodlor/smart-plant-pot-model).
 
-## Features (TBA)
-- APIs.
+## Features
+- APIs
     - `/sensor/latest`: Get the latest sensor data.
     - `/sensor/aggregate`: Get aggregated historical data based on “hours” and “days” parameters.
     - `/weather/latest`: Get the latest weather data.
     - `/weather/aggregate`: Get aggregated historical data based on “hours” and “days” parameters.
-- Visualisation.
+    - `/predictmoisture/{moisture}`: Get soil moisture prediction for the next 7 days.
+- Visualisation
+    - Charts for historical sensor and weather data.
+    - Visualisation of soil moisture prediction.
+- Others
+    - See latest sensor readings and current weather conditions.
 
 ## Installation
 Please refer to [the installation guide](https://github.com/Jangsoodlor/smart-plant-pot-app/wiki/Installation-Guide).
