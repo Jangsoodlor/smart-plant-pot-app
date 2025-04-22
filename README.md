@@ -1,5 +1,5 @@
 # Smart Plant Pot 🪴🌊
-This project aims to create a system to notify users when to water their plants.
+This project aims to help users monitor the status of their plants by providing current and historical readings of soil moisture, temperature, light, and weather conditions. It also provides a prediction of soil moisture and how long it will take until the plant needs to be watered.
 
 - For micropython code used for data collection, please refer to [knilios/SmartPlantPot](https://github.com/knilios/SmartPlantPot).
 - For more information about the predicion model, please refer to [Jangsoodlor/smart-plant-pot-model](https://github.com/Jangsoodlor/smart-plant-pot-model).
@@ -18,7 +18,16 @@ This project aims to create a system to notify users when to water their plants.
     - See latest sensor readings and current weather conditions.
 
 ## Installation
-Please refer to [the installation guide](https://github.com/Jangsoodlor/smart-plant-pot-app/wiki/Installation-Guide).
+We assumed that you've [set up the database](https://github.com/Jangsoodlor/smart-plant-pot-app/wiki/Database-Schema-&-Setup) before installing the app.
+The full the installation guide and basic trobleshooting is available [here](https://github.com/Jangsoodlor/smart-plant-pot-app/wiki/Installation-Guide).
+1. Clone this repository, or download it as a zip file and extract it.
+1. Go to `api` directory and copy `config.py.example` to `config.py`.
+1. Edit `config.py`. Fill in your credentials and follow all the instructoins.
+1. (Optional, but recommended) [Create python virtual environment](https://docs.python.org/3/library/venv.html#creating-virtual-environments) and [activate it](https://docs.python.org/3/library/venv.html#how-venvs-work).
+1. Install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 ## Usage
 ### API
