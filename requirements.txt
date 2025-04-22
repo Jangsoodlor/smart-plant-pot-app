@@ -1,12 +1,15 @@
--r api/stub/requirements.txt
+# Swagger stuffs
 connexion >= 2.6.0, <3.0.0
+connexion[swagger-ui] >= 2.6.0
+setuptools >= 21.0.0
+swagger-ui-bundle >= 0.0.2
+# Database
 DBUtils
+PyMySQL
+cryptography
+# Graphings & Prediction Model
 plotly
 plotly[express]
-PyMySQL
+statsmodels
+# Streamlit
 streamlit
-cryptography
-# testing libraries
-pytest
-selenium
-webdriver-manager

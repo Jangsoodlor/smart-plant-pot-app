@@ -92,6 +92,26 @@ paths:
                   $ref: "#/components/schemas/WeatherData"
                 x-content-type: application/json
       x-openapi-router-controller: swagger_server.controllers.default_controller
+  /predictmoisture/{moisture}:
+    get:
+      summary: Get the prediction of soil moisture.
+      operationId: controller_moisture_prediction
+      parameters:
+      - name: moisture
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PredictMoisture"
+      x-openapi-router-controller: swagger_server.controllers.default_controller
 components:
   schemas:
     SensorData:
@@ -107,9 +127,9 @@ components:
           type: number
       example:
         read_time: read_time
-        light: 0.8008281904610115
-        temperature: 6.027456183070403
-        soil_moisture: 1.4658129805029452
+        light: 0.80082819046101150206595775671303272247314453125
+        temperature: 6.02745618307040320615897144307382404804229736328125
+        soil_moisture: 1.46581298050294517310021547018550336360931396484375
     WeatherData:
       type: object
       properties:
@@ -124,9 +144,56 @@ components:
         cloud_cover:
           type: number
       example:
-        precipitation: 6.027456183070403
+        precipitation: 6.02745618307040320615897144307382404804229736328125
         read_time: read_time
-        temperature: 1.4658129805029452
-        cloud_cover: 5.962133916683182
-        humidity: 0.8008281904610115
+        temperature: 1.46581298050294517310021547018550336360931396484375
+        cloud_cover: 5.962133916683182377482808078639209270477294921875
+        humidity: 0.80082819046101150206595775671303272247314453125
+    SoilMoisture:
+      type: object
+      properties:
+        read_time:
+          type: string
+        soil_moisture:
+          type: number
+      example:
+        read_time: read_time
+        soil_moisture: 0.80082819046101150206595775671303272247314453125
+    PredictMoisture:
+      type: object
+      properties:
+        duration:
+          type: string
+        old_data:
+          type: array
+          items:
+            $ref: "#/components/schemas/SoilMoisture"
+        predictions:
+          type: array
+          items:
+            $ref: "#/components/schemas/SoilMoisture"
+        upper:
+          type: array
+          items:
+            $ref: "#/components/schemas/SoilMoisture"
+        lower:
+          type: array
+          items:
+            $ref: "#/components/schemas/SoilMoisture"
+      example:
+        duration: duration
+        old_data:
+        - read_time: read_time
+          soil_moisture: 0.80082819046101150206595775671303272247314453125
+        - read_time: read_time
+          soil_moisture: 0.80082819046101150206595775671303272247314453125
+        upper:
+        - null
+        - null
+        lower:
+        - null
+        - null
+        predictions:
+        - null
+        - null
 

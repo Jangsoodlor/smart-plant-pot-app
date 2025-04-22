@@ -1,5 +1,13 @@
-OPENAPI_STUB_DIR = "stub"
+# EDIT these attributes.
 DB_HOST = "www.google.com"
 DB_USER = "Joseph Joestar"
 DB_PASSWD = "1234"
 DB_NAME = "DROP DATABASE *"
+
+# Change this to match your table name in the database
+PLANT_SENSOR_TABLE = "plant_sensor"
+WEATHER_TABLE = "open-meteo"
+
+# DO NOT change this unless you know what you're doing
+# (See the installation guide for more details).
+OPENAPI_STUB_DIR = "stub"

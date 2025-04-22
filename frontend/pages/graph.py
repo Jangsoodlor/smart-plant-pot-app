@@ -1,11 +1,17 @@
 from collections.abc import Callable
 
 import streamlit as st
-from components import RadioButtons, TimeSeriesChart
+from components import RadioButtons, TimeSeriesChart, navbar
 from utils import snake_to_title
 
 
 def format_sliders(unit: str) -> Callable:
+    """Format function of the slider
+
+    :param unit: unit of the slider.
+    :return: A format function that add unit to the slider's value.
+    """
+
     def format_func(value):
         if value == 1:
             return f"{value} {unit.title()}"
@@ -15,6 +21,7 @@ def format_sliders(unit: str) -> Callable:
 
 
 if __name__ == "__main__":
+    navbar()
     if "frequency" not in st.session_state:
         st.session_state.frequency = 3
     if "data_range" not in st.session_state:
@@ -43,7 +50,7 @@ if __name__ == "__main__":
         )
 
     st.plotly_chart(
-        TimeSeriesChart.get_fig(
+        TimeSeriesChart.fetch_and_get_fig(
             x="read_time",
             y=selected_button,
             frequency=st.session_state.frequency,
