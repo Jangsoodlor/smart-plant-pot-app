@@ -1,5 +1,6 @@
 import pandas as pd
 from statsmodels.tsa.statespace.sarimax import SARIMAX
+from datetime import datetime
 
 
 class ModelManager:
@@ -69,7 +70,7 @@ class Model:
         :param exog_columns: The list of exog columns.
         :param order: The order of ARIMAX model
         """
-        self.__main_data = builder.main_data
+        self.main_data = builder.main_data
         self.__predicting_column = builder.predicting_column
         self.__exog_models = builder.exog_models
         self.__exog_columns = builder.exog_columns
@@ -78,7 +79,7 @@ class Model:
         self.__order = builder.order
         self.__model = builder.model
         self.__timedelta = builder.timedelta
-        self.__cached_prediction = []  # [prediction, upper, lower] #TODO verify that this works
+        self.__cached_prediction = {}
 
     def __get_exog_data(self, steps: int):
         for model in self.__exog_models:
@@ -94,24 +95,32 @@ class Model:
     def fit_model(self):
         if self.__exog_columns[0] is None:
             model = SARIMAX(
-                endog=self.__main_data[self.__predicting_column], order=self.__order
+                endog=self.main_data[self.__predicting_column], order=self.__order
             )
         else:
             model = SARIMAX(
-                endog=self.__main_data[self.__predicting_column],
-                exog=self.__main_data[self.__exog_columns],
+                endog=self.main_data[self.__predicting_column],
+                exog=self.main_data[self.__exog_columns],
                 order=self.__order,
             )
         self.__model = model.fit()
         return self
 
     def get_prediction(self, steps: int):
-        if len(self.__cached_prediction) == 3:
-            return (
-                self.__cached_prediction[0],
-                self.__cached_prediction[1],
-                self.__cached_prediction[2],
-            )
+        try:
+            cached_duration = (datetime.now() - self.__cached_prediction["ts"]).days
+            if cached_duration > 1:
+                self.__cached_prediction = {}
+                raise ValueError("Please update dataframe")
+            if len(self.__cached_prediction) == 4 and cached_duration < 1:
+                return (
+                    self.__cached_prediction["predicted"],
+                    self.__cached_prediction["upper"],
+                    self.__cached_prediction["lower"],
+                )
+        except KeyError:
+            pass
+
         if self.__model is None:
             raise AttributeError("The model is not fitted yet")
         self.__get_exog_data(steps)
@@ -120,7 +129,7 @@ class Model:
         )
         predicted = predicted_obj.predicted_mean
         forecast_index = pd.date_range(
-            start=self.__main_data.index[-1] + self.__timedelta,
+            start=self.main_data.index[-1] + self.__timedelta,
             freq=self.__timedelta,
             periods=steps,
         )
@@ -131,7 +140,10 @@ class Model:
         lower.index = forecast_index
         upper = forecast_ci.iloc[:, 1]
         upper.index = forecast_index
-        self.__cached_prediction = [predicted, upper, lower]
+        self.__cached_prediction["predicted"] = predicted
+        self.__cached_prediction["upper"] = upper
+        self.__cached_prediction["lower"] = lower
+        self.__cached_prediction["ts"] = datetime.now()
 
         return predicted, upper, lower
 
@@ -153,11 +165,11 @@ class Model:
         if matches.empty:
             return f"More than {MAX_DAY} days"
         index = matches.index[0]
-        number_of_days = (index - self.__main_data.index[-1]).days
+        number_of_days = (index - self.main_data.index[-1]).days
         return f"{number_of_days} " + (
             "day" if number_of_days == 1 or number_of_days == 0 else "days"
         )
 
     @property
     def df(self):
-        return self.__main_data
+        return self.main_data

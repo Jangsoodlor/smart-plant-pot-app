@@ -1,4 +1,6 @@
+import math
 import sys
+from datetime import datetime
 
 import pandas as pd
 import pymysql
@@ -14,7 +16,6 @@ from config import (
 from dbutils.pooled_db import PooledDB
 from flask import abort, request
 from model_manager import ModelBuilder, ModelManager
-from prediction import PredictMoisture
 
 sys.path.append(OPENAPI_STUB_DIR)
 from swagger_server import models
@@ -119,23 +120,36 @@ def moisture_prediction(moisture):
             "humidity", (2, 0, 1), (1, 0, 1, 24)
         ).build()
 
-    prediction, upper, lower = ModelManager.get_model().fit_model().get_prediction(1240)
+    model = ModelManager.get_model()
+    latest_time = model.df.index.max()
+    number_of_15_min_intervals = math.ceil(
+        (((datetime.now() - latest_time).total_seconds() / 60) + (7 * 24 * 60)) / 15
+    )
+
+    try:
+        prediction, upper, lower = model.fit_model().get_prediction(
+            number_of_15_min_intervals
+        )
+    except ValueError:
+        model.main_data = get_moisture_df()
+        prediction, upper, lower = model.fit_model().get_prediction(
+            number_of_15_min_intervals
+        )
+
     old_data = [
         models.SoilMoisture(index, row["soil_moisture"])
-        for index, row in ModelManager.get_model().df.iterrows()
+        for index, row in model.df.iterrows()
     ]
     pred_transformed = [
         models.SoilMoisture(ts, value) for ts, value in prediction.items()
     ]
-    upper_transformed = [
-        models.SoilMoisture(ts, value) for ts, value in upper.items()
-    ]
-    lower_transformed = [
-        models.SoilMoisture(ts, value) for ts, value in lower.items()
-    ]
+    upper_transformed = [models.SoilMoisture(ts, value) for ts, value in upper.items()]
+    lower_transformed = [models.SoilMoisture(ts, value) for ts, value in lower.items()]
 
-    duration = ModelManager.get_model().get_duration(moisture)
-    return models.PredictMoisture(duration, old_data, pred_transformed, upper_transformed, lower_transformed)
+    duration = model.get_duration(moisture)
+    return models.PredictMoisture(
+        duration, old_data, pred_transformed, upper_transformed, lower_transformed
+    )
 
 
 def get_moisture_df():
@@ -167,6 +181,6 @@ def get_moisture_df():
         data = cs.fetchall()
 
     df = pd.DataFrame(data, columns=columns)
-    df["ts"] = pd.to_datetime(df["ts"])  # parse as datetime
+    df["ts"] = pd.to_datetime(df["ts"])
     df.set_index("ts", inplace=True)
     return df
