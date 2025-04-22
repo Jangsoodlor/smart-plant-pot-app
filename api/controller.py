@@ -50,8 +50,15 @@ def aggregate_sensor_data():
         hours = int(request.args.get("hours", 3))
     except ValueError:
         abort(400, description="'days' and 'hours' must be integers.")
-    if (24 % hours) != 0 or hours < 1:
-        abort(400, description="Parameter 'hrs' must be positive factors of 24.")
+    if hours < 1:
+        abort(400, description="Parameter 'hours' must be positive value.")
+    if (24 % hours) != 0:
+        abort(
+            400,
+            description="Parameter 'hours' must be positive factors of 24 (24 %\ hours == 0).",
+        )
+    if days < 1:
+        abort(400, description="'days' must a postive integer.")
     with pool.connection() as conn, conn.cursor() as cs:
         cs.execute(f"""
             SELECT
@@ -90,8 +97,16 @@ def aggregate_weather_data():
         hours = int(request.args.get("hours", 3))
     except ValueError:
         abort(400, description="'days' and 'hours' must be integers.")
-    if (24 % hours) != 0 or hours < 1:
-        abort(400, description="Parameter 'hrs' must be positive factors of 24.")
+    if hours < 1:
+        abort(400, description="Parameter 'hours' must be positive value.")
+    if (24 % hours) != 0:
+        abort(
+            400,
+            description="Parameter 'hours' must be positive factors of 24 (24 %\ hours == 0).",
+        )
+    if days < 1:
+        abort(400, description="'days' must a postive integer.")
+
     with pool.connection() as conn, conn.cursor() as cs:
         cs.execute(f"""
             SELECT
