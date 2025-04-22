@@ -24,15 +24,13 @@ def init_page() -> None:
 def predict() -> None:
     """Get the prediction result and update the page accordingly"""
     try:
-        duration, predictions = APIFetcher.get_soil_moisture_prediction(
-            st.session_state.soil_moisture
+        duration, old_data, predictions, upper, lower = (
+            APIFetcher.get_soil_moisture_prediction(st.session_state.soil_moisture)
         )
         st.session_state.prediction = f"You should water your plant in\n# {duration}"
         st.session_state.show_chart = True
-        st.session_state.chart = TimeSeriesChart.get_single_line_chart(
-            predictions,
-            x="read_time",
-            y="soil_moisture",
+        st.session_state.chart = TimeSeriesChart.plot_prediction_chart(
+            old_data, predictions, upper, lower
         )
     except ValueError as e:
         error_modal(e)
